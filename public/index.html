@@ -13,12 +13,11 @@
       type="font/woff2"
       crossorigin
     />
-    <link rel="stylesheet" href="/styles.css?v=stats-footer" />
+    <link rel="stylesheet" href="/styles.css?v=header-links" />
     <!-- <script src="/script.js" defer></script> -->
     <!-- 
       TO ADD
       * Bio
-      * Links  
       * Music player (acii album colour, movable)
       * Friends
       * Gifs / images
@@ -29,7 +28,7 @@
       Layout plan:
       ┌──────────────────────────────────────────────────────────┐
       | mosly.space                                       links  │
-      │ short bio over two or three lines                        │
+      │ bio                                                      │
       │                                                          │
       │      [music]                                             │
       │                 animated background                      │
@@ -41,13 +40,52 @@
   </head>
   <body>
     <main>
-      <h1>mosly.space</h1>
+      <header>
+        <nav aria-label="Main navigation">
+          <ul>
+            <li>
+              <a
+                href="https://github.com/leomosley"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                github
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://mosly.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                portfolio
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://r6.mosly.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                r6
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+      <div class="bottom-content">
+        <section class="bio" aria-labelledby="site-title">
+          <h1 id="site-title">mosly.space</h1>
+          <p>hey I'm leo, welcome to my cyberspace</p>
+        </section>
+        <footer>
+          <p>
+            this site has <!--# views --> views,
+            <!--# followers --> followers, and has been updated
+            <!--# updates --> times
+          </p>
+        </footer>
+      </div>
     </main>
-    <footer>
-      <p>
-        This site has <!--# views --> views, <!--# followers --> followers, and
-        has been updated <!--# updates --> times.
-      </p>
-    </footer>
   </body>
 </html>

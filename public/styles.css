@@ -7,26 +7,156 @@
 }
 
 :root {
+  --page-padding: 1rem;
+
   font-family: "Satoshi", sans-serif;
   color-scheme: dark;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
+  min-height: 100svh;
+  overflow: hidden;
   background: black url("/assets/background.gif") center / cover no-repeat;
+  color: white;
+}
+
+body::after {
+  position: fixed;
+  inset: auto 0 0;
+  height: 30vh;
+  pointer-events: none;
+  background: linear-gradient(to top, rgb(0 0 0 / 85%), transparent);
+  content: "";
+}
+
+header {
+  position: static;
+}
+
+.bottom-content {
+  position: fixed;
+  z-index: 1;
+  right: var(--page-padding);
+  bottom: var(--page-padding);
+  left: var(--page-padding);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(12rem, 40vw);
+  align-items: end;
+  gap: 2rem;
+}
+
+.bio h1 {
+  margin: 0;
+  font-size: clamp(2.75rem, 7vw, 5.5rem);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.bio p {
+  margin: 1rem 0 0;
+  color: rgb(255 255 255 / 72%);
+  font-size: 0.95rem;
+}
+
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav {
+  position: fixed;
+  z-index: 1;
+  top: var(--page-padding);
+  right: var(--page-padding);
+}
+
+nav a {
+  display: inline-flex;
+  align-items: baseline;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid transparent;
+  color: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  transition: border-color 150ms ease;
+}
+
+nav a[target="_blank"]::after {
+  width: 0.8em;
+  margin-left: 0.25rem;
+  opacity: 0;
+  content: "↗";
+  transition: opacity 150ms ease;
+}
+
+nav a:hover,
+nav a:focus-visible {
+  border-color: currentcolor;
+}
+
+nav a[target="_blank"]:hover::after,
+nav a[target="_blank"]:focus-visible::after {
+  opacity: 1;
+}
+
+nav a:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 0.35rem;
 }
 
 footer {
-  position: fixed;
-  bottom: 1rem;
-  left: 1rem;
+  text-align: right;
 }
 
 footer p {
   margin: 0;
-  font-size: small;
-  color: white;
+  color: rgb(255 255 255 / 72%);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 40rem) {
+  .bottom-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .bio h1 {
+    font-size: clamp(2.75rem, 14vw, 4rem);
+  }
+
+  .bio p {
+    margin-top: 0.5rem;
+  }
+
+  footer {
+    max-width: 24rem;
+    text-align: left;
+  }
+
+  footer > p {
+    margin-top: 0.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  nav a,
+  nav a::after {
+    transition: none;
+  }
 }
