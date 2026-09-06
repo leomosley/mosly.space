@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "Preserve",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "strict": true,
+    "types": ["bun"]
+  },
+  "include": ["scripts/**/*.ts", "scripts/**/*.mts"]
+}

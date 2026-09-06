@@ -8,5 +8,5 @@ body {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  background: black url("/assets/background.jpg") center / cover no-repeat;
+  background: black url("/assets/background.gif") center / cover no-repeat;
 }

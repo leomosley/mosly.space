@@ -2,9 +2,11 @@
   "name": "mosly.space",
   "private": true,
   "scripts": {
-    "dev": "live-server public --port=3000 --no-browser"
+    "dev": "live-server public --port=3000 --no-browser",
+    "gif": "bun scripts/gif.mts"
   },
   "devDependencies": {
+    "@types/bun": "^1.4.1",
     "live-server": "1.2.2"
   }
 }
