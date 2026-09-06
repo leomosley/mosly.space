@@ -89,6 +89,13 @@ function skipSong(direction) {
   loadSong(currentSongIndex + direction, !audio.paused);
 }
 
+function updatePlaybackButton() {
+  const isPlaying = !audio.paused && !audio.ended;
+  playIcon.hidden = isPlaying;
+  pauseIcon.hidden = !isPlaying;
+  playButton.setAttribute("aria-label", isPlaying ? "Pause" : "Play");
+}
+
 playButton.addEventListener("click", () => {
   if (audio.paused) {
     audio.play().catch(() => {});
@@ -120,16 +127,8 @@ document.addEventListener("keydown", (event) => {
   volumePopover.hidden = true;
   volumeToggle.focus();
 });
-audio.addEventListener("play", () => {
-  playIcon.hidden = true;
-  pauseIcon.hidden = false;
-  playButton.setAttribute("aria-label", "Pause");
-});
-audio.addEventListener("pause", () => {
-  playIcon.hidden = false;
-  pauseIcon.hidden = true;
-  playButton.setAttribute("aria-label", "Play");
-});
+audio.addEventListener("playing", updatePlaybackButton);
+audio.addEventListener("pause", updatePlaybackButton);
 audio.addEventListener("ended", () => skipSong(1));
 
 let dragOffsetX = 0;
@@ -179,3 +178,4 @@ new ResizeObserver(() => fitArtwork(artwork)).observe(artwork);
 new ResizeObserver(updateMetadataScroll).observe(trackName.parentElement);
 document.fonts.ready.then(updateMetadataScroll);
 loadSong(currentSongIndex);
+updatePlaybackButton();
