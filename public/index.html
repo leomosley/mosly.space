@@ -49,9 +49,12 @@
       type="font/woff2"
       crossorigin
     />
-    <link rel="stylesheet" href="/styles.css?v=125172" />
+    <link rel="stylesheet" href="/styles.css?v=125181" />
     <script src="/music.js?v=125155" defer></script>
-    <script src="/script.js?v=125173" defer></script>
+    <script src="/draggable.js?v=125175" defer></script>
+    <script src="/ansi.js?v=125180" defer></script>
+    <script src="/script.js?v=125179" defer></script>
+    <script src="/r6.js?v=125180" defer></script>
     <!-- 
       TO ADD
       * Music player (link to animated background w/dispatch event?)
@@ -132,11 +135,15 @@
         </ul>
       </aside>
       <section
-        class="card music-player"
+        class="card draggable-card music-player"
         data-music-player
         aria-label="Music player"
       >
-        <pre class="music-player-art" data-ansi-art aria-hidden="true"></pre>
+        <pre
+          class="ansi-art music-player-art"
+          data-ansi-art
+          aria-hidden="true"
+        ></pre>
         <div class="music-player-content">
           <div class="music-player-details" aria-live="polite">
             <p class="music-player-track"><span data-track-name></span></p>
@@ -201,6 +208,40 @@
           </div>
         </div>
         <audio data-audio preload="metadata"></audio>
+      </section>
+      <section
+        class="card draggable-card r6-card"
+        data-r6-card
+        data-state="loading"
+        aria-label="Rainbow Six rank"
+      >
+        <a
+          class="r6-card-link"
+          href="https://r6.mosly.dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="View Rainbow Six stats"
+        >
+          <span>view profile</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M10 14 21 3m0 0h-7m7 0v7" />
+            <path
+              d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"
+            />
+          </svg>
+        </a>
+        <div class="r6-card-content" aria-live="polite">
+          <pre
+            class="ansi-art r6-card-art"
+            data-r6-emblem
+            role="img"
+            hidden
+          ></pre>
+          <div class="r6-card-details">
+            <p class="r6-card-username">mosly</p>
+            <p class="r6-card-rp" data-r6-rp>loading stats</p>
+          </div>
+        </div>
       </section>
       <div class="bottom-content">
         <section class="bio" aria-labelledby="site-title">

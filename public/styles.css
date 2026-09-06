@@ -50,6 +50,16 @@ header {
   backdrop-filter: blur(0.3rem);
 }
 
+.draggable-card {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.draggable-card.is-dragging {
+  cursor: grabbing;
+}
+
 .music-player {
   position: fixed;
   z-index: 2;
@@ -60,27 +70,23 @@ header {
   gap: 0.8rem;
   width: min(20rem, calc(100vw - 2rem));
   transform: translate(-50%, -50%);
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
 }
 
-.music-player.is-dragging {
-  cursor: grabbing;
-}
-
-.music-player-art {
+.ansi-art {
   width: 100%;
   aspect-ratio: 1;
   margin: 0;
   overflow: hidden;
-  border-radius: calc(var(--card-radius) - var(--card-padding));
-  background: black;
   font-family: "Courier New", monospace;
   font-weight: 700;
   line-height: 0.6;
   letter-spacing: 0;
   white-space: pre;
+}
+
+.music-player-art {
+  border-radius: calc(var(--card-radius) - var(--card-padding));
+  background: black;
 }
 
 .music-player-content {
@@ -235,6 +241,95 @@ header {
   border: 0;
   border-radius: 50%;
   background: white;
+}
+
+.r6-card {
+  position: fixed;
+  z-index: 2;
+  top: calc(50% + 2rem);
+  left: calc(50% + 10rem);
+  width: min(16rem, calc(100vw - 2rem));
+  padding: 0.8rem 0.5rem;
+  text-align: left;
+}
+
+.r6-card p {
+  margin: 0;
+}
+
+.r6-card-link {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: rgb(255 255 255 / 72%);
+  font-size: 0.68rem;
+  text-decoration: none;
+}
+
+.r6-card-link svg {
+  display: block;
+  width: 0.9rem;
+  height: 0.9rem;
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+.r6-card-link:hover,
+.r6-card-link:focus-visible {
+  color: white;
+}
+
+.r6-card-link:focus-visible {
+  outline: 1px solid white;
+  outline-offset: 0.2rem;
+}
+
+.r6-card-content {
+  display: grid;
+  grid-template-columns: 5.85rem minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.r6-card-art {
+  width: 5.85rem;
+  aspect-ratio: 5 / 6;
+}
+
+.r6-card-art[hidden] {
+  display: none;
+}
+
+.r6-card-username {
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+.r6-card-details {
+  align-self: end;
+  min-width: 0;
+  padding-right: 0.5rem;
+  text-align: left;
+}
+
+.r6-card-rp {
+  margin-top: 0.25rem;
+  color: rgb(255 255 255 / 62%);
+  font-size: 0.72rem;
+}
+
+.r6-card[data-state="loading"] .r6-card-content {
+  opacity: 0.5;
+}
+
+.r6-card[data-state="error"] .r6-card-content {
+  color: rgb(255 255 255 / 42%);
 }
 
 .friends {
@@ -403,6 +498,12 @@ footer p {
   .music-player {
     top: 50%;
     left: 50%;
+  }
+
+  .r6-card {
+    top: calc(50% + 7rem);
+    right: 1rem;
+    left: auto;
   }
 }
 
