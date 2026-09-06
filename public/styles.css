@@ -496,12 +496,12 @@ footer p {
   }
 
   .music-player {
-    top: 50%;
+    top: calc(50% - 3rem);
     left: 50%;
   }
 
   .r6-card {
-    top: calc(50% + 2rem);
+    top: calc(50% + 4rem);
     right: 1rem;
     left: auto;
   }
