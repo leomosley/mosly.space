@@ -127,7 +127,7 @@ document.addEventListener("keydown", (event) => {
   volumePopover.hidden = true;
   volumeToggle.focus();
 });
-audio.addEventListener("playing", updatePlaybackButton);
+audio.addEventListener("play", updatePlaybackButton);
 audio.addEventListener("pause", updatePlaybackButton);
 audio.addEventListener("ended", () => skipSong(1));
 
