@@ -18,3 +18,15 @@ body {
   place-items: center;
   background: black url("/assets/background.gif") center / cover no-repeat;
 }
+
+footer {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+}
+
+footer p {
+  margin: 0;
+  font-size: small;
+  color: white;
+}
