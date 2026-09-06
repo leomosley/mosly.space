@@ -38,6 +38,84 @@ header {
   position: static;
 }
 
+.friends {
+  position: fixed;
+  z-index: 1;
+  top: var(--page-padding);
+  left: var(--page-padding);
+}
+
+.link {
+  display: inline-flex;
+  align-items: baseline;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid transparent;
+  color: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  transition: border-color 150ms ease;
+}
+
+.link:hover,
+.link:focus-visible {
+  border-color: currentcolor;
+}
+
+.link[target="_blank"]::after,
+.friends li a::after {
+  width: 0.8em;
+  margin-left: 0.25rem;
+  opacity: 0;
+  content: "↗";
+  transition: opacity 150ms ease;
+}
+
+.link[target="_blank"]:hover::after,
+.link[target="_blank"]:focus-visible::after,
+.friends li a:hover::after,
+.friends li a:focus-visible::after {
+  opacity: 1;
+}
+
+.link:focus-visible,
+.friends li a:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 0.25rem;
+}
+
+.friends h2 {
+  margin: 0 0 0.4rem;
+  color: rgb(255 255 255 / 48%);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.friends ul {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.friends li a {
+  display: inline-flex;
+  align-items: baseline;
+  color: rgb(255 255 255 / 78%);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.friends li a:hover,
+.friends li a:focus-visible {
+  color: white;
+}
+
 .bottom-content {
   position: fixed;
   z-index: 1;
@@ -68,7 +146,7 @@ nav ul {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: clamp(1rem, 2.5vw, 2rem);
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -79,42 +157,6 @@ nav {
   z-index: 1;
   top: var(--page-padding);
   right: var(--page-padding);
-}
-
-nav a {
-  display: inline-flex;
-  align-items: baseline;
-  padding-bottom: 0.2rem;
-  border-bottom: 1px solid transparent;
-  color: inherit;
-  font-size: 0.9rem;
-  font-weight: 500;
-  line-height: 1;
-  text-decoration: none;
-  transition: border-color 150ms ease;
-}
-
-nav a[target="_blank"]::after {
-  width: 0.8em;
-  margin-left: 0.25rem;
-  opacity: 0;
-  content: "↗";
-  transition: opacity 150ms ease;
-}
-
-nav a:hover,
-nav a:focus-visible {
-  border-color: currentcolor;
-}
-
-nav a[target="_blank"]:hover::after,
-nav a[target="_blank"]:focus-visible::after {
-  opacity: 1;
-}
-
-nav a:focus-visible {
-  outline: 2px solid white;
-  outline-offset: 0.35rem;
 }
 
 footer {
@@ -129,6 +171,12 @@ footer p {
 }
 
 @media (max-width: 40rem) {
+  nav ul {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+  }
+
   .bottom-content {
     display: flex;
     flex-direction: column;
@@ -155,8 +203,10 @@ footer p {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  nav a,
-  nav a::after {
+  .link,
+  .link::after,
+  .friends li a,
+  .friends li a::after {
     transition: none;
   }
 }
