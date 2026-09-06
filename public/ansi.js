@@ -32,6 +32,16 @@ window.renderAnsiArtwork = async function renderAnsiArtwork(element, source) {
   element.append(fragment);
 };
 
-window.fitAnsiArtwork = function fitAnsiArtwork(element, columns = 30) {
-  element.style.fontSize = `${element.clientWidth / (columns * 0.6)}px`;
+window.fitAnsiArtwork = function fitAnsiArtwork(
+  element,
+  columns = 30,
+  rows = 30,
+) {
+  const width = element.clientWidth;
+  if (!width) return;
+
+  const cellSize = width / columns;
+  element.style.height = `${cellSize * rows}px`;
+  element.style.fontSize = `${cellSize / 0.6}px`;
+  element.style.lineHeight = `${cellSize}px`;
 };

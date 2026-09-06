@@ -73,6 +73,7 @@ header {
 }
 
 .ansi-art {
+  align-self: start;
   width: 100%;
   aspect-ratio: 1;
   margin: 0;
@@ -81,7 +82,9 @@ header {
   font-weight: 700;
   line-height: 0.6;
   letter-spacing: 0;
+  text-size-adjust: none;
   white-space: pre;
+  -webkit-text-size-adjust: none;
 }
 
 .music-player-art {
