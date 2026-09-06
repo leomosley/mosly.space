@@ -13,28 +13,15 @@
       type="font/woff2"
       crossorigin
     />
-    <link rel="stylesheet" href="/styles.css?v=125152" />
-    <!-- <script src="/script.js" defer></script> -->
+    <link rel="stylesheet" href="/styles.css?v=125172" />
+    <script src="/music.js?v=125155" defer></script>
+    <script src="/script.js?v=125172" defer></script>
     <!-- 
       TO ADD
-      * Bio
-      * Music player (acii album colour, movable, link to animated background)
-      * Gifs / images
+      * Music player (link to animated background w/dispatch event?)
       * Custom cursor / thing that follows cursor
-      * Github contributions?
+      * Github contributions? Small one. 
       * Changelog?
-      
-      Layout plan:
-      ┌──────────────────────────────────────────────────────────┐
-      | mosly.space                                       links  │
-      │ bio                                                      │
-      │                                                          │
-      │      [music]                                             │
-      │                 animated background                      │
-      │                                                          │
-      │                                                          │
-      │ site stats                                  friends list │
-      └──────────────────────────────────────────────────────────┘
     -->
   </head>
   <body>
@@ -106,6 +93,77 @@
           </li>
         </ul>
       </aside>
+      <section
+        class="card music-player"
+        data-music-player
+        aria-label="Music player"
+      >
+        <pre class="music-player-art" data-ansi-art aria-hidden="true"></pre>
+        <div class="music-player-content">
+          <div class="music-player-details" aria-live="polite">
+            <p class="music-player-track"><span data-track-name></span></p>
+            <p class="music-player-artist"><span data-track-artist></span></p>
+          </div>
+          <div class="music-player-controls">
+            <button type="button" data-previous aria-label="Previous song">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19 20 9 12l10-8v16Z" />
+                <path d="M5 19V5" />
+              </svg>
+            </button>
+            <button type="button" data-play aria-label="Play">
+              <svg data-play-icon viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m7 4 13 8L7 20V4Z" />
+              </svg>
+              <svg
+                data-pause-icon
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                hidden
+              >
+                <path d="M8 5v14M16 5v14" />
+              </svg>
+            </button>
+            <button type="button" data-next aria-label="Next song">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m5 4 10 8-10 8V4Z" />
+                <path d="M19 5v14" />
+              </svg>
+            </button>
+            <div class="music-player-volume">
+              <button
+                type="button"
+                data-volume-toggle
+                aria-label="Volume"
+                aria-expanded="false"
+                aria-controls="volume-popover"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M11 5 6 9H2v6h4l5 4V5Z" />
+                  <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+                </svg>
+              </button>
+              <div
+                class="music-player-volume-popover"
+                id="volume-popover"
+                data-volume-popover
+                hidden
+              >
+                <input
+                  type="range"
+                  data-volume
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value="0.7"
+                  aria-label="Volume"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <audio data-audio preload="metadata"></audio>
+      </section>
       <div class="bottom-content">
         <section class="bio" aria-labelledby="site-title">
           <h1 id="site-title">mosly.space</h1>

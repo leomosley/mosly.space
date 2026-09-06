@@ -38,6 +38,205 @@ header {
   position: static;
 }
 
+.card {
+  --card-padding: 0.65rem;
+  --card-radius: 0.8rem;
+
+  padding: var(--card-padding);
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-radius: var(--card-radius);
+  background: rgb(8 8 8 / 14%);
+  box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 30%);
+  backdrop-filter: blur(0.3rem);
+}
+
+.music-player {
+  position: fixed;
+  z-index: 2;
+  top: calc(50% - 8rem);
+  left: calc(50% - 12rem);
+  display: grid;
+  grid-template-columns: clamp(7.5rem, 22vw, 9rem) minmax(0, 1fr);
+  gap: 0.8rem;
+  width: min(20rem, calc(100vw - 2rem));
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.music-player.is-dragging {
+  cursor: grabbing;
+}
+
+.music-player-art {
+  width: 100%;
+  aspect-ratio: 1;
+  margin: 0;
+  overflow: hidden;
+  border-radius: calc(var(--card-radius) - var(--card-padding));
+  background: black;
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  line-height: 0.6;
+  letter-spacing: 0;
+  white-space: pre;
+}
+
+.music-player-content {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.2rem 0;
+}
+
+.music-player-details {
+  min-width: 0;
+}
+
+.music-player-details p {
+  overflow: hidden;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.music-player-details span {
+  display: inline-block;
+}
+
+.music-player-details span.is-overflowing {
+  animation: metadata-scroll var(--scroll-duration) linear infinite alternate;
+}
+
+@keyframes metadata-scroll {
+  0%,
+  15% {
+    transform: translateX(0);
+  }
+
+  85%,
+  100% {
+    transform: translateX(calc(-1 * var(--scroll-distance)));
+  }
+}
+
+.music-player-track {
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+.music-player-artist {
+  margin-top: 0.1rem !important;
+  color: rgb(255 255 255 / 52%);
+  font-size: 0.68rem;
+  font-weight: 500;
+}
+
+.music-player-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.music-player button {
+  display: grid;
+  width: 1rem;
+  height: 1rem;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgb(255 255 255 / 68%);
+  font: inherit;
+  font-size: 0.67rem;
+  cursor: pointer;
+}
+
+.music-player button svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+.music-player button svg[hidden] {
+  display: none;
+}
+
+.music-player button:hover,
+.music-player button:focus-visible {
+  color: white;
+}
+
+.music-player button:focus-visible,
+.music-player input:focus-visible {
+  outline: 1px solid white;
+  outline-offset: 0.2rem;
+}
+
+.music-player-volume {
+  position: relative;
+  margin-left: auto;
+}
+
+.music-player-volume-popover {
+  position: absolute;
+  right: -0.4rem;
+  bottom: calc(100% + 0.75rem);
+  display: flex;
+  width: 5.5rem;
+  padding: 0.45rem;
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-radius: 0.5rem;
+  background: rgb(8 8 8 / 94%);
+  box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 35%);
+}
+
+.music-player-volume-popover[hidden] {
+  display: none;
+}
+
+.music-player-volume-popover input {
+  width: 3.75rem;
+  height: 0.6rem;
+  margin: 0 auto;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.music-player-volume-popover input::-webkit-slider-runnable-track {
+  height: 1px;
+  background: rgb(255 255 255 / 55%);
+}
+
+.music-player-volume-popover input::-webkit-slider-thumb {
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-top: calc((1px - 0.55rem) / 2);
+  appearance: none;
+  border: 0;
+  border-radius: 50%;
+  background: white;
+}
+
+.music-player-volume-popover input::-moz-range-track {
+  height: 1px;
+  background: rgb(255 255 255 / 55%);
+}
+
+.music-player-volume-popover input::-moz-range-thumb {
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 0;
+  border-radius: 50%;
+  background: white;
+}
+
 .friends {
   position: fixed;
   z-index: 1;
@@ -200,9 +399,21 @@ footer p {
   footer > p {
     margin-top: 0.2rem;
   }
+
+  .music-player {
+    top: 50%;
+    left: 50%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .music-player-details span.is-overflowing {
+    max-width: 100%;
+    overflow: hidden;
+    animation: none;
+    text-overflow: ellipsis;
+  }
+
   .link,
   .link::after,
   .friends li a,

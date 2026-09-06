@@ -4,6 +4,7 @@
     "moduleResolution": "bundler",
     "noEmit": true,
     "strict": true,
+    "allowImportingTsExtensions": true,
     "types": ["bun"]
   },
   "include": ["scripts/**/*.ts", "scripts/**/*.mts"]

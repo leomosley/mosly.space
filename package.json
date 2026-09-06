@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "dev": "live-server public --port=3000 --no-browser",
-    "gif": "bun scripts/gif.mts"
+    "gif": "bun scripts/gif.mts",
+    "test": "bun test"
   },
   "devDependencies": {
     "@types/bun": "^1.4.1",
