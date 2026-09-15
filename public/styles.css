@@ -306,20 +306,16 @@ header {
 }
 
 .r6-card[data-state="loading"] .r6-card-art {
-  display: grid;
-  place-items: center;
-}
-
-.r6-card-art-placeholder {
-  display: grid;
-  width: 2.5rem;
-  aspect-ratio: 1;
-  place-items: center;
-  border: 1px solid currentcolor;
-  border-radius: 50%;
-  font-family: Satoshi, sans-serif;
-  font-size: 0.9rem;
-  line-height: 1;
+  color: transparent;
+  background: linear-gradient(
+      105deg,
+      rgb(255 255 255 / 25%) 35%,
+      rgb(255 255 255 / 90%) 50%,
+      rgb(255 255 255 / 25%) 65%
+    )
+    100% 0 / 250% 100%;
+  background-clip: text;
+  animation: r6-emblem-loading 1.6s linear infinite;
 }
 
 .r6-card-art[hidden] {
@@ -350,6 +346,12 @@ header {
 
 .r6-card[data-state="error"] .r6-card-content {
   color: rgb(255 255 255 / 42%);
+}
+
+@keyframes r6-emblem-loading {
+  to {
+    background-position: -100% 0;
+  }
 }
 
 .friends {
@@ -528,6 +530,10 @@ footer p {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .r6-card[data-state="loading"] .r6-card-art {
+    animation: none;
+  }
+
   .music-player-details span.is-overflowing {
     max-width: 100%;
     overflow: hidden;
