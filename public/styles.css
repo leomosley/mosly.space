@@ -480,6 +480,17 @@ footer p {
   line-height: 1.4;
 }
 
+.not-found {
+  display: grid;
+  min-height: 100svh;
+  place-content: center;
+  text-align: center;
+}
+
+.not-found h1 {
+  margin: 0;
+}
+
 @media (max-width: 40rem) {
   nav ul {
     flex-direction: column;
