@@ -306,16 +306,9 @@ header {
 }
 
 .r6-card[data-state="loading"] .r6-card-art {
-  color: transparent;
-  background: linear-gradient(
-      105deg,
-      rgb(255 255 255 / 25%) 35%,
-      rgb(255 255 255 / 90%) 50%,
-      rgb(255 255 255 / 25%) 65%
-    )
-    100% 0 / 250% 100%;
-  background-clip: text;
-  animation: r6-emblem-loading 1.6s linear infinite;
+  opacity: 0.45;
+  filter: grayscale(1) brightness(0.8);
+  animation: r6-emblem-loading 1.6s ease-in-out infinite;
 }
 
 .r6-card-art[hidden] {
@@ -349,8 +342,9 @@ header {
 }
 
 @keyframes r6-emblem-loading {
-  to {
-    background-position: -100% 0;
+  50% {
+    opacity: 0.9;
+    filter: grayscale(1) brightness(1.2);
   }
 }
 
