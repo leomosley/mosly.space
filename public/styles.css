@@ -305,6 +305,23 @@ header {
   aspect-ratio: 5 / 6;
 }
 
+.r6-card[data-state="loading"] .r6-card-art {
+  display: grid;
+  place-items: center;
+}
+
+.r6-card-art-placeholder {
+  display: grid;
+  width: 2.5rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid currentcolor;
+  border-radius: 50%;
+  font-family: Satoshi, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
 .r6-card-art[hidden] {
   display: none;
 }
