@@ -305,6 +305,12 @@ header {
   aspect-ratio: 5 / 6;
 }
 
+.r6-card[data-state="loading"] .r6-card-art {
+  opacity: 0.45;
+  filter: grayscale(1) brightness(0.8);
+  animation: r6-emblem-loading 1.6s ease-in-out infinite;
+}
+
 .r6-card-art[hidden] {
   display: none;
 }
@@ -333,6 +339,13 @@ header {
 
 .r6-card[data-state="error"] .r6-card-content {
   color: rgb(255 255 255 / 42%);
+}
+
+@keyframes r6-emblem-loading {
+  50% {
+    opacity: 0.9;
+    filter: grayscale(1) brightness(1.2);
+  }
 }
 
 .friends {
@@ -511,6 +524,10 @@ footer p {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .r6-card[data-state="loading"] .r6-card-art {
+    animation: none;
+  }
+
   .music-player-details span.is-overflowing {
     max-width: 100%;
     overflow: hidden;

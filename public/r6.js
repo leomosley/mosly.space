@@ -2,6 +2,10 @@ const r6Card = document.querySelector("[data-r6-card]");
 const r6Emblem = r6Card.querySelector("[data-r6-emblem]");
 const r6Rp = r6Card.querySelector("[data-r6-rp]");
 
+window
+  .renderAnsiArtwork(r6Emblem, "/assets/r6-ranks/v7-champion-i-small.txt")
+  .catch(console.error);
+
 const rankTiers = [
   "Copper",
   "Bronze",
