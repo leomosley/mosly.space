@@ -11,6 +11,8 @@
 
   font-family: "Satoshi", sans-serif;
   color-scheme: dark;
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
 }
 
 * {
@@ -82,9 +84,7 @@ header {
   font-weight: 700;
   line-height: 0.6;
   letter-spacing: 0;
-  text-size-adjust: none;
   white-space: pre;
-  -webkit-text-size-adjust: none;
 }
 
 .music-player-art {
