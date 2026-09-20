@@ -6,6 +6,7 @@ if (canvas) {
   const sourceContext = source.getContext("2d");
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
   const text = "mosly.space";
+  let letterRanges = [];
   let frames = [];
   let frame = 0;
   let timeout;
@@ -17,52 +18,83 @@ if (canvas) {
     sourceContext.clearRect(0, 0, source.width, source.height);
     sourceContext.fillStyle = "white";
     sourceContext.font = '700 34px "Satoshi", sans-serif';
+    const letters = [];
     let x = 2;
 
     for (const character of text) {
+      const width = sourceContext.measureText(character).width;
       sourceContext.fillText(character, x, 31);
-      x += sourceContext.measureText(character).width - 1.8;
+      letters.push({ x, width });
+      x += width - 1.8;
     }
+
+    letterRanges = letters.map((letter, index) => ({
+      start: Math.floor(letter.x),
+      end: Math.ceil(letters[index + 1]?.x ?? letter.x + letter.width),
+    }));
+  }
+
+  function random(...values) {
+    let hash = 2166136261;
+    for (const value of values) hash = Math.imul(hash ^ value, 16777619);
+    return (hash >>> 0) / 4294967295;
   }
 
   function createFrame(frameNumber) {
     const input = sourceContext.getImageData(0, 0, source.width, source.height);
     const output = context.createImageData(canvas.width, canvas.height);
 
-    for (let y = 0; y < source.height; y++) {
-      const band = Math.floor(y / 3);
-      const shiftX =
-        ((frameNumber + band * 5) % 17 === 0 ? 2 : 0) -
-        ((frameNumber * 2 + band * 3) % 19 === 0 ? 1 : 0);
+    for (let letter = 0; letter < letterRanges.length; letter++) {
+      const range = letterRanges[letter];
+      const moveX =
+        random(frameNumber, letter, 1) > 0.72
+          ? Math.floor(random(frameNumber, letter, 2) * 3) - 1
+          : 0;
+      const moveY =
+        random(frameNumber, letter, 3) > 0.82
+          ? Math.floor(random(frameNumber, letter, 4) * 3) - 1
+          : 0;
 
-      for (let x = 0; x < source.width; x++) {
-        const sourcePixel = (y * source.width + x) * 4;
-        const alpha = input.data[sourcePixel + 3];
-        if (alpha < 96) continue;
+      for (let y = 0; y < source.height; y++) {
+        const band = Math.floor(y / 3);
+        const tear =
+          random(frameNumber, letter, band, 5) > 0.84
+            ? Math.floor(random(frameNumber, letter, band, 6) * 4) - 1
+            : 0;
 
-        const column = Math.floor(x / 8);
-        const shiftY = (frameNumber + column * 7) % 29 === 0 ? 1 : 0;
-        const destinationX = x + shiftX;
-        const destinationY = y + shiftY;
-        if (
-          destinationX < 0 ||
-          destinationX >= canvas.width ||
-          destinationY >= canvas.height
-        ) {
-          continue;
-        }
+        for (let x = range.start; x < range.end; x++) {
+          const sourcePixel = (y * source.width + x) * 4;
+          const alpha = input.data[sourcePixel + 3];
+          if (alpha < 96 || random(frameNumber, letter, x, y, 7) > 0.997) {
+            continue;
+          }
 
-        const destinationPixel = (destinationY * canvas.width + destinationX) * 4;
-        output.data[destinationPixel] = 255;
-        output.data[destinationPixel + 1] = 255;
-        output.data[destinationPixel + 2] = 255;
-        output.data[destinationPixel + 3] = 255;
+          const column = Math.floor((x - range.start) / 5);
+          const twitch =
+            random(frameNumber, letter, column, 8) > 0.94
+              ? Math.floor(random(frameNumber, letter, column, 9) * 3) - 1
+              : 0;
+          const destinationX = x + moveX + tear;
+          const destinationY = y + moveY + twitch;
+          if (
+            destinationX < 0 ||
+            destinationX >= canvas.width ||
+            destinationY < 0 ||
+            destinationY >= canvas.height
+          ) {
+            continue;
+          }
 
-        if (
-          (frameNumber + x + y * 3) % 113 === 0 &&
-          destinationX + 1 < canvas.width
-        ) {
-          output.data.set([255, 255, 255, 255], destinationPixel + 4);
+          const destinationPixel =
+            (destinationY * canvas.width + destinationX) * 4;
+          output.data.set([255, 255, 255, 255], destinationPixel);
+
+          if (
+            random(frameNumber, letter, x, y, 10) > 0.988 &&
+            destinationX + 1 < canvas.width
+          ) {
+            output.data.set([255, 255, 255, 255], destinationPixel + 4);
+          }
         }
       }
     }

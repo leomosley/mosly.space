@@ -439,7 +439,7 @@ header {
 }
 
 .wordmark-canvas {
-  width: clamp(18rem, 34vw, 29rem);
+  width: clamp(20rem, 38vw, 32rem);
   margin: 0;
 }
 
