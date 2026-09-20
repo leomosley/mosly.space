@@ -454,7 +454,7 @@ header {
 }
 
 .bio p {
-  margin: 1rem 0 0;
+  margin: clamp(0rem, calc(2.5vw - 1rem), 1rem) 0 0;
   color: rgb(255 255 255 / 72%);
   font-size: 0.95rem;
 }
@@ -519,10 +519,6 @@ footer p {
 
   .not-found-code {
     width: min(24rem, calc(100vw - 3rem));
-  }
-
-  .bio p {
-    margin-top: 0;
   }
 
   footer {
