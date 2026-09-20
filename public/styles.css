@@ -438,16 +438,19 @@ header {
   gap: 2rem;
 }
 
-.wordmark-canvas {
-  width: clamp(20rem, 38vw, 32rem);
+.pixel-text-canvas {
   margin: 0;
 }
 
-.wordmark-canvas canvas {
+.pixel-text-canvas canvas {
   display: block;
   width: 100%;
   height: auto;
   image-rendering: pixelated;
+}
+
+.wordmark-canvas {
+  width: clamp(20rem, 38vw, 32rem);
 }
 
 .bio p {
@@ -491,8 +494,9 @@ footer p {
   text-align: center;
 }
 
-.not-found h1 {
-  margin: 0;
+.not-found-code {
+  width: clamp(20rem, 46vw, 36rem);
+  margin-inline: auto;
 }
 
 @media (max-width: 40rem) {
@@ -511,6 +515,10 @@ footer p {
 
   .wordmark-canvas {
     width: min(25rem, calc(100vw - 2rem));
+  }
+
+  .not-found-code {
+    width: min(28rem, calc(100vw - 2rem));
   }
 
   .bio p {

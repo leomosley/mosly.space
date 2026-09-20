@@ -1,16 +1,18 @@
-const canvas = document.querySelector("[data-wordmark-canvas]");
+const FRAME_COUNT = 36;
+const FRAME_DELAY = 90;
+const BAND_HEIGHT = 3;
+const COLUMN_WIDTH = 5;
+const ALPHA_THRESHOLD = 96;
 
-if (canvas) {
-  const FRAME_COUNT = 36;
-  const FRAME_DELAY = 90;
-  const BAND_HEIGHT = 3;
-  const COLUMN_WIDTH = 5;
-  const ALPHA_THRESHOLD = 96;
-
+function initializePixelText(canvas) {
   const context = canvas.getContext("2d");
   const source = document.createElement("canvas");
   const sourceContext = source.getContext("2d");
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  const text = canvas.dataset.pixelText;
+  const fontSize = Number(canvas.dataset.pixelFontSize);
+  const baseline = Number(canvas.dataset.pixelBaseline);
+  const tracking = Number(canvas.dataset.pixelTracking);
   let frames = [];
   let frame = 0;
   let timeout;
@@ -19,19 +21,18 @@ if (canvas) {
   source.height = canvas.height;
 
   function rasterizeGlyphs() {
-    const text = "mosly.space";
     const letters = [];
     let x = 2;
 
     sourceContext.clearRect(0, 0, source.width, source.height);
     sourceContext.fillStyle = "white";
-    sourceContext.font = '700 34px "Satoshi", sans-serif';
+    sourceContext.font = `700 ${fontSize}px "Satoshi", sans-serif`;
 
     for (const character of text) {
       const width = sourceContext.measureText(character).width;
-      sourceContext.fillText(character, x, 31);
+      sourceContext.fillText(character, x, baseline);
       letters.push({ start: Math.floor(x), width });
-      x += width - 1.8;
+      x += width + tracking;
     }
 
     const sourcePixels = sourceContext.getImageData(
@@ -150,3 +151,5 @@ if (canvas) {
   reducedMotion.addEventListener("change", restart);
   document.fonts.ready.then(restart);
 }
+
+document.querySelectorAll("[data-pixel-text]").forEach(initializePixelText);
