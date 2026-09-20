@@ -438,16 +438,23 @@ header {
   gap: 2rem;
 }
 
-.bio h1 {
+.pixel-text-canvas {
   margin: 0;
-  font-size: clamp(2.75rem, 7vw, 5.5rem);
-  font-weight: 650;
-  line-height: 1;
-  letter-spacing: -0.04em;
+}
+
+.pixel-text-canvas canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.wordmark-canvas {
+  width: clamp(20rem, 38vw, 32rem);
 }
 
 .bio p {
-  margin: 1rem 0 0;
+  margin: clamp(0rem, calc(2.5vw - 1rem), 1rem) 0 0;
   color: rgb(255 255 255 / 72%);
   font-size: 0.95rem;
 }
@@ -487,8 +494,9 @@ footer p {
   text-align: center;
 }
 
-.not-found h1 {
-  margin: 0;
+.not-found-code {
+  width: clamp(18rem, 42vw, 32rem);
+  margin-inline: auto;
 }
 
 @media (max-width: 40rem) {
@@ -505,12 +513,12 @@ footer p {
     gap: 0.75rem;
   }
 
-  .bio h1 {
-    font-size: clamp(2.75rem, 14vw, 4rem);
+  .wordmark-canvas {
+    width: min(25rem, calc(100vw - 2rem));
   }
 
-  .bio p {
-    margin-top: 0.5rem;
+  .not-found-code {
+    width: min(24rem, calc(100vw - 3rem));
   }
 
   footer {
