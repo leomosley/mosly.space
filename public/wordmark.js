@@ -21,19 +21,29 @@ function initializePixelText(canvas) {
   source.height = canvas.height;
 
   function rasterizeGlyphs() {
-    const letters = [];
-    let x = 2;
-
     sourceContext.clearRect(0, 0, source.width, source.height);
     sourceContext.fillStyle = "white";
     sourceContext.font = `700 ${fontSize}px "Satoshi", sans-serif`;
 
-    for (const character of text) {
-      const width = sourceContext.measureText(character).width;
+    const characters = Array.from(text);
+    const widths = characters.map(
+      (character) => sourceContext.measureText(character).width,
+    );
+    const textWidth =
+      widths.reduce((total, width) => total + width, 0) +
+      tracking * (characters.length - 1);
+    const letters = [];
+    let x =
+      canvas.dataset.pixelAlign === "center"
+        ? (source.width - textWidth) / 2
+        : 2;
+
+    characters.forEach((character, index) => {
       sourceContext.fillText(character, x, baseline);
+      const width = widths[index];
       letters.push({ start: Math.floor(x), width });
       x += width + tracking;
-    }
+    });
 
     const sourcePixels = sourceContext.getImageData(
       0,

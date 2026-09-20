@@ -495,7 +495,7 @@ footer p {
 }
 
 .not-found-code {
-  width: clamp(20rem, 46vw, 36rem);
+  width: clamp(18rem, 42vw, 32rem);
   margin-inline: auto;
 }
 
@@ -518,7 +518,7 @@ footer p {
   }
 
   .not-found-code {
-    width: min(28rem, calc(100vw - 2rem));
+    width: min(24rem, calc(100vw - 3rem));
   }
 
   .bio p {
