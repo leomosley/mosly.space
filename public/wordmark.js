@@ -47,19 +47,19 @@ if (canvas) {
     for (let letter = 0; letter < letterRanges.length; letter++) {
       const range = letterRanges[letter];
       const moveX =
-        random(frameNumber, letter, 1) > 0.72
+        random(frameNumber, letter, 1) > 0.84
           ? Math.floor(random(frameNumber, letter, 2) * 3) - 1
           : 0;
       const moveY =
-        random(frameNumber, letter, 3) > 0.82
+        random(frameNumber, letter, 3) > 0.9
           ? Math.floor(random(frameNumber, letter, 4) * 3) - 1
           : 0;
 
       for (let y = 0; y < source.height; y++) {
         const band = Math.floor(y / 3);
         const tear =
-          random(frameNumber, letter, band, 5) > 0.84
-            ? Math.floor(random(frameNumber, letter, band, 6) * 4) - 1
+          random(frameNumber, letter, band, 5) > 0.92
+            ? Math.floor(random(frameNumber, letter, band, 6) * 3) - 1
             : 0;
 
         for (let x = range.start; x < range.end; x++) {
@@ -71,7 +71,7 @@ if (canvas) {
 
           const column = Math.floor((x - range.start) / 5);
           const twitch =
-            random(frameNumber, letter, column, 8) > 0.94
+            random(frameNumber, letter, column, 8) > 0.97
               ? Math.floor(random(frameNumber, letter, column, 9) * 3) - 1
               : 0;
           const destinationX = x + moveX + tear;
