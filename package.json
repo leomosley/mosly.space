@@ -4,10 +4,12 @@
   "scripts": {
     "dev": "live-server public --port=3000 --no-browser",
     "gif": "bun scripts/gif.mts",
+    "opengraph": "bun scripts/opengraph.mts",
     "test": "bun test"
   },
   "devDependencies": {
     "@types/bun": "^1.4.1",
-    "live-server": "1.2.2"
+    "live-server": "1.2.2",
+    "playwright": "^1.64.1"
   }
 }

@@ -21,6 +21,20 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install generation tools
+        run: |
+          sudo apt-get update && sudo apt-get install -y ffmpeg
+          bun install --frozen-lockfile
+          bunx playwright install --with-deps chromium
+
+      - name: Test
+        run: bun test
+
+      - name: Generate Open Graph GIFs
+        run: bun run opengraph
+
       - name: Deploy to Nekoweb
         uses: indiefellas/deploy2nekoweb@v1.0.1
         with:

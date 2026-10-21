@@ -4,7 +4,7 @@ const BAND_HEIGHT = 3;
 const COLUMN_WIDTH = 5;
 const ALPHA_THRESHOLD = 96;
 
-function initializePixelText(canvas) {
+export function initializePixelText(canvas, { manual = false } = {}) {
   const context = canvas.getContext("2d");
   const source = document.createElement("canvas");
   const sourceContext = source.getContext("2d");
@@ -155,11 +155,25 @@ function initializePixelText(canvas) {
     frames = Array.from({ length: FRAME_COUNT }, (_, frameNumber) =>
       createFrame(glyphs, frameNumber),
     );
-    draw();
+    if (manual) context.putImageData(frames[0], 0, 0);
+    else draw();
   }
 
   reducedMotion.addEventListener("change", restart);
-  document.fonts.ready.then(restart);
+  const ready = Promise.all([
+    document.fonts.ready,
+    document.fonts.load(`700 ${fontSize}px "Satoshi"`),
+  ]).then(restart);
+  return {
+    ready,
+    frameCount: FRAME_COUNT,
+    frameDelay: FRAME_DELAY,
+    renderFrame(frameNumber) {
+      context.putImageData(frames[frameNumber % frames.length], 0, 0);
+    },
+  };
 }
 
-document.querySelectorAll("[data-pixel-text]").forEach(initializePixelText);
+globalThis.document
+  ?.querySelectorAll("[data-pixel-text]:not([data-pixel-manual])")
+  .forEach((canvas) => initializePixelText(canvas));
