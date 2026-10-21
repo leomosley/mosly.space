@@ -1,12 +1,16 @@
 import { mkdir, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve, sep } from "node:path";
+import { parseArgs } from "node:util";
 import { chromium } from "playwright";
-import { LOGO_POSITIONS } from "../public/opengraph.js";
+import {
+  DEFAULT_HEIGHT,
+  imageHeight,
+  LOGO_POSITIONS,
+} from "../public/opengraph.js";
 
 const ROOT = new URL("../public/", import.meta.url).pathname;
 const WIDTH = 1200;
-const HEIGHT = 630;
 
 async function command(args: string[]): Promise<string> {
   const process = Bun.spawn(args, { stdout: "pipe", stderr: "pipe" });
@@ -48,17 +52,38 @@ export function previewServer() {
   });
 }
 
-export async function generate(output = join(ROOT, "assets/opengraph")) {
+export function generationHeight(args: string[]): number {
+  const { values } = parseArgs({
+    args,
+    options: { height: { type: "string" } },
+  });
+  if (values.height === undefined) return DEFAULT_HEIGHT;
+  const height = imageHeight(values.height);
+  if (height === undefined)
+    throw new Error("--height must be an integer between 200 and 2160 pixels");
+  return height;
+}
+
+export async function generate(
+  height = DEFAULT_HEIGHT,
+  output = join(
+    ROOT,
+    "assets/opengraph",
+    height === DEFAULT_HEIGHT ? "" : String(height),
+  ),
+) {
+  if (imageHeight(String(height)) === undefined)
+    throw new Error("Invalid image height");
   const temporary = await mkdtemp(join(tmpdir(), "mosly-opengraph-"));
   const server = previewServer();
   let browser;
   try {
     browser = await chromium.launch();
     const page = await browser.newPage({
-      viewport: { width: WIDTH, height: HEIGHT },
+      viewport: { width: WIDTH, height },
       deviceScaleFactor: 1,
     });
-    await page.goto(`${server.url}opengraph.html?capture`);
+    await page.goto(`${server.url}opengraph.html?capture&height=${height}`);
     // Keep DOM-specific code inside Chromium, not Bun's TypeScript context.
     const animation = await page.evaluate<{
       frameCount: number;
@@ -107,7 +132,9 @@ export async function generate(output = join(ROOT, "assets/opengraph")) {
     await mkdir(output, { recursive: true });
 
     for (const logo of LOGO_POSITIONS) {
-      await page.goto(`${server.url}opengraph.html?capture&logo=${logo}`);
+      await page.goto(
+        `${server.url}opengraph.html?capture&logo=${logo}&height=${height}`,
+      );
       const bounds = await page.evaluate<{
         x: number;
         y: number;
@@ -140,7 +167,7 @@ export async function generate(output = join(ROOT, "assets/opengraph")) {
         "-filter_complex",
         // 10ms ticks preserve GIF centisecond timing and the wordmark's 90ms
         // cadence. mpdecimate removes duplicate frames without changing time.
-        `[0:v]scale=${WIDTH}:${HEIGHT}:force_original_aspect_ratio=increase,crop=${WIDTH}:${HEIGHT},setsar=1,fps=100[bg];` +
+        `[0:v]scale=${WIDTH}:${height}:force_original_aspect_ratio=increase,crop=${WIDTH}:${height},setsar=1,fps=100[bg];` +
           `[1:v]scale=${Math.round(bounds.width)}:${Math.round(bounds.height)}:flags=neighbor,format=rgba,fps=100[logo];` +
           `[bg][logo]overlay=${Math.round(bounds.x)}:${Math.round(bounds.y)}:shortest=1,trim=duration=${duration / 1000},mpdecimate=hi=0:lo=0:frac=0,split[a][b];` +
           "[a]palettegen=max_colors=8[p];[b][p]paletteuse=dither=none",
@@ -169,7 +196,7 @@ export async function generate(output = join(ROOT, "assets/opengraph")) {
       ).streams[0];
       if (
         encoded.width !== WIDTH ||
-        encoded.height !== HEIGHT ||
+        encoded.height !== height ||
         Number(encoded.nb_frames) < 2 ||
         Math.abs(Number(encoded.duration) * 1000 - duration) > 10
       ) {
@@ -178,7 +205,7 @@ export async function generate(output = join(ROOT, "assets/opengraph")) {
       if (file.size > 5_000_000)
         throw new Error(`Generated GIF exceeds 5MB: ${logo}`);
       console.log(
-        `${logo}: ${WIDTH}×${HEIGHT}, ${duration}ms → ${join(output, `${logo}.gif`)}`,
+        `${logo}: ${WIDTH}×${height}, ${duration}ms → ${join(output, `${logo}.gif`)}`,
       );
     }
   } finally {
@@ -189,8 +216,10 @@ export async function generate(output = join(ROOT, "assets/opengraph")) {
 }
 
 if (import.meta.main) {
-  generate().catch((error) => {
-    console.error(error.message);
-    process.exitCode = 1;
-  });
+  Promise.resolve()
+    .then(() => generate(generationHeight(Bun.argv.slice(2))))
+    .catch((error) => {
+      console.error(error.message);
+      process.exitCode = 1;
+    });
 }

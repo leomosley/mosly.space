@@ -18,3 +18,4 @@ jobs:
       - run: bunx playwright install --with-deps chromium
       - run: bun test
       - run: bun run opengraph
+      - run: bun run opengraph --height 300

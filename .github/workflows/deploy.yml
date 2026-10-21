@@ -33,7 +33,9 @@ jobs:
         run: bun test
 
       - name: Generate Open Graph GIFs
-        run: bun run opengraph
+        run: |
+          bun run opengraph
+          bun run opengraph --height 300
 
       - name: Deploy to Nekoweb
         uses: indiefellas/deploy2nekoweb@v1.0.1

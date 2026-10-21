@@ -81,3 +81,38 @@ test("homepage and 404 still paint animated wordmarks after module conversion", 
   }
   await page.close();
 });
+
+test("height parameter bounds the banner and anchors every logo corner inside it", async () => {
+  const page = await browser.newPage({
+    viewport: { width: 1200, height: 900 },
+  });
+  for (const height of ["200", "300", "900", "invalid", "-1", "2161"]) {
+    const expectedHeight = ["200", "300", "900"].includes(height)
+      ? Number(height)
+      : 630;
+    for (const logo of [
+      "bottom-left",
+      "bottom-right",
+      "top-left",
+      "top-right",
+    ]) {
+      await page.goto(
+        `${server.url}opengraph.html?capture&height=${height}&logo=${logo}`,
+      );
+      const bounds = await page.evaluate<any>(`(async () => {
+        await window.opengraph.animation.ready;
+        const { x, y, width, height } = window.opengraph.canvas.getBoundingClientRect();
+        return { x, y, width, height, bodyHeight: document.body.getBoundingClientRect().height };
+      })()`);
+      expect(bounds.bodyHeight).toBe(expectedHeight);
+      expect(bounds.y).toBeCloseTo(
+        logo.startsWith("top") ? 40 : expectedHeight - 40 - bounds.height,
+      );
+      expect(bounds.x).toBeCloseTo(
+        logo.endsWith("right") ? 1200 - 40 - bounds.width : 40,
+      );
+      expect(bounds.y + bounds.height).toBeLessThan(expectedHeight);
+    }
+  }
+  await page.close();
+});

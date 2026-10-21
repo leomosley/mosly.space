@@ -1,9 +1,20 @@
+html {
+  overflow: auto;
+  background: black;
+}
+
+body {
+  position: relative;
+  height: var(--image-height, 630px);
+  min-height: 0;
+}
+
 body::after {
   content: none;
 }
 
 .wordmark-canvas {
-  position: fixed;
+  position: absolute;
   bottom: 40px;
   left: 40px;
   width: min(clamp(20rem, 38vw, 32rem), calc(100vw - 80px));
