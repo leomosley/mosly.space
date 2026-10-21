@@ -1,4 +1,4 @@
-import { initializePixelText } from "./wordmark.js?v=8";
+import { initializePixelText } from "./wordmark.js?v=9";
 
 export const LOGO_POSITIONS = [
   "bottom-left",
@@ -30,6 +30,11 @@ if (typeof document !== "undefined") {
     `${imageHeight(params.get("height")) ?? DEFAULT_HEIGHT}px`,
   );
   const canvas = document.querySelector("[data-pixel-text]");
+  canvas.dataset.pixelAlign = document.documentElement.dataset.logo.endsWith(
+    "right",
+  )
+    ? "right"
+    : "left";
   const manual = params.has("capture");
   const animation = initializePixelText(canvas, { manual });
   // The generator reads the same rasterized frames used by the live site.

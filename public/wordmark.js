@@ -36,7 +36,9 @@ export function initializePixelText(canvas, { manual = false } = {}) {
     let x =
       canvas.dataset.pixelAlign === "center"
         ? (source.width - textWidth) / 2
-        : 2;
+        : canvas.dataset.pixelAlign === "right"
+          ? source.width - textWidth - 2
+          : 2;
 
     characters.forEach((character, index) => {
       sourceContext.fillText(character, x, baseline);

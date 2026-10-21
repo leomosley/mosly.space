@@ -116,3 +116,42 @@ test("height parameter bounds the banner and anchors every logo corner inside it
   }
   await page.close();
 });
+
+test("visible wordmark pixels stay close to the selected edge throughout the loop", async () => {
+  const page = await browser.newPage({
+    viewport: { width: 1200, height: 300 },
+  });
+  for (const logo of ["bottom-left", "bottom-right", "top-left", "top-right"]) {
+    await page.goto(
+      `${server.url}opengraph.html?capture&height=300&logo=${logo}`,
+    );
+    const gaps = await page.evaluate<number[]>(`(async () => {
+      const { canvas, animation } = window.opengraph;
+      await animation.ready;
+      const bounds = canvas.getBoundingClientRect();
+      const scale = bounds.width / canvas.width;
+      const gaps = [];
+      for (let frame = 0; frame < animation.frameCount; frame++) {
+        animation.renderFrame(frame);
+        const pixels = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
+        let left = canvas.width, right = 0;
+        for (let y = 0; y < canvas.height; y++) {
+          for (let x = 0; x < canvas.width; x++) {
+            if (!pixels[(y * canvas.width + x) * 4 + 3]) continue;
+            left = Math.min(left, x);
+            right = Math.max(right, x + 1);
+          }
+        }
+        gaps.push(document.documentElement.dataset.logo.endsWith('right')
+          ? innerWidth - (bounds.x + right * scale)
+          : bounds.x + left * scale);
+      }
+      return gaps;
+    })()`);
+    for (const gap of gaps) {
+      expect(gap).toBeGreaterThanOrEqual(40);
+      expect(gap).toBeLessThanOrEqual(52);
+    }
+  }
+  await page.close();
+});

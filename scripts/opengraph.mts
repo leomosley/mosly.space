@@ -99,16 +99,6 @@ export async function generate(
         background: new URL(background.slice(5, -2)).pathname,
       };
     })()`);
-    for (let frame = 0; frame < animation.frameCount; frame++) {
-      const data = await page.evaluate<string>(`(() => {
-        window.opengraph.animation.renderFrame(${frame});
-        return window.opengraph.canvas.toDataURL('image/png').split(',')[1];
-      })()`);
-      await Bun.write(
-        join(temporary, `${frame.toString().padStart(3, "0")}.png`),
-        Buffer.from(data, "base64"),
-      );
-    }
     const background = join(ROOT, animation.background);
     const probe = JSON.parse(
       await command([
@@ -145,6 +135,18 @@ export async function generate(
         const { x, y, width, height } = window.opengraph.canvas.getBoundingClientRect();
         return { x, y, width, height };
       })()`);
+      // Right-hand corners render right-aligned glyphs inside the canvas.
+      // Export each position's actual frames, not the bottom-left frames.
+      for (let frame = 0; frame < animation.frameCount; frame++) {
+        const data = await page.evaluate<string>(`(() => {
+          window.opengraph.animation.renderFrame(${frame});
+          return window.opengraph.canvas.toDataURL('image/png').split(',')[1];
+        })()`);
+        await Bun.write(
+          join(temporary, `${frame.toString().padStart(3, "0")}.png`),
+          Buffer.from(data, "base64"),
+        );
+      }
       await command([
         "ffmpeg",
         "-v",
