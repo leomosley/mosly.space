@@ -1,3 +1,6 @@
 node_modules/
 
 .env
+
+# Built from the site's animations before deployment.
+public/assets/opengraph/

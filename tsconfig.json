@@ -4,6 +4,7 @@
     "moduleResolution": "bundler",
     "noEmit": true,
     "strict": true,
+    "allowJs": true,
     "allowImportingTsExtensions": true,
     "types": ["bun"]
   },
